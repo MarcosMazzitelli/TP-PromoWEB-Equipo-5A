@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36518.9 d17.14
+VisualStudioVersion = 17.14.36518.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PromoWeb", "PromoWeb.csproj", "{71335847-C0FE-4C1A-A93F-619059F3A00C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dominio", "..\dominio\dominio.csproj", "{3A5EEBCA-2F10-4974-8578-BFC5787CDFD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "datos", "..\datos\datos.csproj", "{BBACDB97-8657-4C48-8CA2-1870381291FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{71335847-C0FE-4C1A-A93F-619059F3A00C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71335847-C0FE-4C1A-A93F-619059F3A00C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71335847-C0FE-4C1A-A93F-619059F3A00C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A5EEBCA-2F10-4974-8578-BFC5787CDFD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A5EEBCA-2F10-4974-8578-BFC5787CDFD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A5EEBCA-2F10-4974-8578-BFC5787CDFD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A5EEBCA-2F10-4974-8578-BFC5787CDFD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBACDB97-8657-4C48-8CA2-1870381291FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBACDB97-8657-4C48-8CA2-1870381291FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBACDB97-8657-4C48-8CA2-1870381291FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBACDB97-8657-4C48-8CA2-1870381291FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
