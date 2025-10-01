@@ -42,7 +42,7 @@ namespace PromoWeb
                 }
 
                 Session["codigoVoucher"] = voucher.CodigoVoucher;
-                // AGREGAR EL RESPONSE REDIRECT CON LA PROXIMA VENTANA
+                Response.Redirect("Premios.aspx", false);
             }
             catch (Exception ex)
             {
