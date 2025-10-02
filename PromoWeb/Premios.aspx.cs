@@ -13,26 +13,53 @@ namespace PromoWeb
     {
         public List<Articulo> ListaArticulos { get; set; }
         public List<Imagen> ListaImagenes { get; set; }
-        public List<Imagen> imagenesPorArticulo;
+        //public List<Imagen> imagenesPorArticulo;
         protected void Page_Load(object sender, EventArgs e)
         {
             ArticuloNegocio articuloNegocio = new ArticuloNegocio();
-            ImagenNegocio imagenNegocio = new ImagenNegocio();
+            //ImagenNegocio imagenNegocio = new ImagenNegocio();
             
             //Se carga en memoria la property publica ListaArticulos e imagenes para poder usarla en el front
-            ListaArticulos = articuloNegocio.listar(); 
-            ListaImagenes = imagenNegocio.listar();
+            ListaArticulos = articuloNegocio.listar();
+            //ListaImagenes = imagenNegocio.listar();
 
+            if (!IsPostBack)
+            {
+                repTarjetas.DataSource = ListaArticulos;
+                repTarjetas.DataBind();
+            }
         }
 
-        public string ImagenUrl(List<Imagen> imagenesPorArticulo)
+        //public string ImagenUrl(List<Imagen> imagenesPorArticulo)
+        //{
+        //    if(imagenesPorArticulo != null && imagenesPorArticulo.Count > 0)
+        //    {
+        //        return imagenesPorArticulo[0].ImagenUrl;
+        //    }
+        //    //imagen por defecto (placeholder)
+        //    return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUwCJYSnbBLMEGWKfSnWRGC_34iCCKkxePpg&s";
+        //}
+
+        protected void repTarjetas_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            if(imagenesPorArticulo != null && imagenesPorArticulo.Count > 0)
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                return imagenesPorArticulo[0].ImagenUrl;
+                var repImagenes = (Repeater)e.Item.FindControl("repImagenes");
+                var articulo = (Articulo)e.Item.DataItem;
+
+                ImagenNegocio negocio = new ImagenNegocio();
+                ListaImagenes = negocio.listarPorIdArticulo(articulo.Id);
+
+                repImagenes.DataSource = ListaImagenes;
+                repImagenes.DataBind();
             }
-            //imagen por defecto (placeholder)
-            return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUwCJYSnbBLMEGWKfSnWRGC_34iCCKkxePpg&s";
+        }
+
+        // https://learn.microsoft.com/es-es/dotnet/api/system.web.ui.webcontrols.repeater.itemdatabound?view=netframework-4.8.1#system-web-ui-webcontrols-repeater-itemdatabound
+
+        protected void btnElegirPremio_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
