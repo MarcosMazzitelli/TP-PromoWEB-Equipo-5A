@@ -8,12 +8,12 @@
             <div class ="row mt-3">
                 <div class="col-md-4">
                     <label for ="txtDocumento" class="form-label">Documento</label>
-                    <asp:TextBox runat="server" ID="txtDocumento" CssClass="form-control" />
+                    <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="txtDocumento_TextChanged" ID="txtDocumento" CssClass="form-control" />
                 </div>
             </div>
             <div class="col-md-4">
                 <label for ="txtNombre" class="form-label">Nombre</label>
-                <asp:TextBox runat="server" ID="TextNombre" CssClass="form-control"/>
+                <asp:TextBox runat="server" ID="txtNombre" CssClass="form-control"/>
             </div>
             <div class="col-md-4">
                 <label for ="txtApellido" class="form-label">Apellido</label>
@@ -39,13 +39,11 @@
                 <asp:TextBox runat="server" ID="txtCP" CssClass="form-control" />
             </div>
             <div class="col-12">
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox">
-                <label class="form-check-label" for="invalidCheck"> Acepte terminos y condiciones </label>
+                <asp:CheckBox ID="chkAceptar" runat="server"/>
+                <asp:Label ID="lblAceptar" runat="server" AssociatedControlID="chkAceptar" CssClass="form-check-label">Acepte términos y condiciones</asp:Label>  
             </div>
-            </div>
-                <div class="col-12">
-                <asp:Button ID="BtnParticipar" runat ="server" Text ="Participar!" class="btn btn-primary" />
+            <div class="col-12">
+                <asp:Button Text ="Participar!" ID="BtnParticipar" OnClick="BtnParticipar_Click" runat ="server" class="btn btn-primary" />
             </div>
     </div>
 </div>
