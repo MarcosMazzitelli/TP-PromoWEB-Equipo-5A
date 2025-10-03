@@ -42,6 +42,9 @@
                 <asp:CheckBox ID="chkAceptar" runat="server"/>
                 <asp:Label ID="lblAceptar" runat="server" AssociatedControlID="chkAceptar" CssClass="form-check-label">Acepte términos y condiciones</asp:Label>  
             </div>
+             <div class="col-12">
+                 <asp:Label ID="lblError" runat="server" CssClass="text-danger fw-bold"></asp:Label>
+            </div>
             <div class="col-12">
                 <asp:Button Text ="Participar!" ID="BtnParticipar" OnClick="BtnParticipar_Click" runat ="server" class="btn btn-primary" />
             </div>

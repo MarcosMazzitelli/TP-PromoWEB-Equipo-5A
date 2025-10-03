@@ -98,7 +98,7 @@ namespace negocio
                 datos.cerrarConexion();
             }
         }
-        public void agregarCliente(Cliente nuevo)
+        /*public void agregarCliente(Cliente nuevo)
         {
             AccesoDatos datos = new AccesoDatos();
             try
@@ -122,6 +122,32 @@ namespace negocio
                 datos.cerrarConexion();
             }
            
+        }*/
+
+        public int agregarCliente(Cliente nuevo)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+            datos.setearConsulta(@"
+            INSERT INTO Clientes (Documento, Nombre, Apellido, Email, Direccion, Ciudad, CP)
+            VALUES (@documento, @nombre, @apellido, @email, @direccion, @ciudad, @cp);
+            SELECT CAST(SCOPE_IDENTITY() AS INT);"); 
+                datos.setearParametro("@documento", nuevo.Documento);
+                datos.setearParametro("@nombre", nuevo.Nombre);
+                datos.setearParametro("@apellido", nuevo.Apellido);
+                datos.setearParametro("@email", nuevo.Email);
+                datos.setearParametro("@direccion", nuevo.Direccion);
+                datos.setearParametro("@ciudad", nuevo.Ciudad);
+                datos.setearParametro("@cp", nuevo.CP);
+
+                int idGenerado = datos.ejecutarEscalar(); 
+                return idGenerado;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
         }
 
         public void modificar (Cliente cliente)
