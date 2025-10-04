@@ -19,9 +19,6 @@ namespace PromoWeb
 
         protected void btnSiguiente_Click(object sender, EventArgs e)
         {
-            alertWarning1.Visible = false;
-            alertWarning2.Visible = false;
-
             string codigoVoucher = txtVoucher.Text;
             VoucherNegocio negocio = new VoucherNegocio();
 
@@ -31,23 +28,24 @@ namespace PromoWeb
 
                 if (voucher == null)
                 {
-                    alertWarning1.Visible = true;
-                    return;
+                    Session.Add("error", "El código del voucher ingresado no es válido.");
+                    Response.Redirect("Error.aspx");
                 }
 
                 if (voucher.IdCliente != 0)
                 {
-                    alertWarning2.Visible = true;
-                    return;
+                    Session.Add("error", "Este voucher ya fue utilizado.");
+                    Response.Redirect("Error.aspx");
                 }
 
-                Session["codigoVoucher"] = voucher.CodigoVoucher;
-                Response.Redirect("Premios.aspx", false);
+                Session.Add("codigoVoucher", voucher.CodigoVoucher);
+                Response.Redirect("Premios.aspx");
             }
+            catch (System.Threading.ThreadAbortException ex) { }
             catch (Exception ex)
             {
-                alertDanger.Visible = true;
                 Session.Add("error", ex.ToString());
+                Response.Redirect("Error.aspx");
             }
         }
     }
