@@ -25,9 +25,12 @@ namespace negocio
                     Voucher aux = new Voucher();
 
                     aux.CodigoVoucher = (string)datos.Lector["CodigoVoucher"];
-                    aux.IdCliente = (int)datos.Lector["IdCliente"];
-                    aux.FechaCanje = (DateTime)datos.Lector["FechaCanje"];
-                    aux.IdArticulo = (int)datos.Lector["IdArticulo"];
+                    if (!(datos.Lector["IdCliente"] is DBNull))
+                    {
+                        aux.IdCliente = (int)datos.Lector["IdCliente"];
+                        aux.FechaCanje = (DateTime)datos.Lector["FechaCanje"];
+                        aux.IdArticulo = (int)datos.Lector["IdArticulo"];
+                    }
 
                     return aux;
                 }
