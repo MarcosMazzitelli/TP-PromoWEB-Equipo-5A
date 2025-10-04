@@ -1,6 +1,15 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="Premios.aspx.cs" Inherits="PromoWeb.Premios" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+<style>
+    .card-img {
+        max-height: 250px;   /* Ajustá según lo que quieras */
+        min-height: 250px;
+        object-fit: contain; /* Ajusta dentro del recuadro sin deformar */
+    }
+
+</style>
+
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <h1>Ventana de premios!</h1>
@@ -17,7 +26,7 @@
         <div class="col">
             <div class="card h-100">
                 <!---  carrusel dinamico dentro de cada tarjeta-->
-                <div id="<%:idCarousel %>" class="carousel slide">
+                <div id="<%:idCarousel %>" class="carousel carousel-dark slide">
                     <div class="carousel-indicators">
                         <%
                             /*FOR de indicadores (botones) que marcan cuantas imagenes hay y permiten clickear para ir directo a una posicion especifica)*/
@@ -38,7 +47,7 @@
                         %>
                         <div class='carousel-item <%: (i == 0 ? "active" : "") %>'>
                             <img src='<%: imagenesPorArticulo[i].ImagenUrl %>'
-                                class="d-block w-100"
+                                class="d-block w-100 card-img"
                                 alt='Imagen de <%: articulo.Nombre %>'>
                         </div>
                         <%
