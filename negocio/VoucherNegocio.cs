@@ -50,7 +50,7 @@ namespace negocio
 
             try
             {
-                datos.setearConsulta("UPDATE Vouchers V SET V.IdCliente = @idCliente, V.FechaCanje = @fechaCanje, V.IdArticulo = @idArticulo WHERE V.CodigoVoucher = @codigoVoucher");
+                datos.setearConsulta("UPDATE Vouchers SET IdCliente = @idCliente, FechaCanje = @fechaCanje, IdArticulo = @idArticulo WHERE CodigoVoucher = @codigoVoucher");
                 datos.setearParametro("@codigoVoucher", voucher.CodigoVoucher);
                 datos.setearParametro("@idCliente", voucher.IdCliente);
                 datos.setearParametro("@fechaCanje", voucher.FechaCanje);

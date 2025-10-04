@@ -71,7 +71,7 @@ namespace negocio
             AccesoDatos datos = new AccesoDatos();
             try
             {
-                datos.setearConsulta("SELECT Documento, Nombre, Apellido, Email, Direccion, Ciudad, CP FROM Clientes WHERE Documento = @documento");
+                datos.setearConsulta("SELECT Id, Documento, Nombre, Apellido, Email, Direccion, Ciudad, CP FROM Clientes WHERE Documento = @documento");
                 datos.setearParametro("@documento", dni);
                 datos.ejecutarLectura();
 
@@ -85,6 +85,7 @@ namespace negocio
                     cliente.Direccion = (string)datos.Lector["Direccion"];
                     cliente.Ciudad = (string)datos.Lector["Ciudad"];
                     cliente.CP = (int)datos.Lector["CP"];
+                    cliente.Id = (int)datos.Lector["Id"];
                     return cliente;
                 }
                 return null;

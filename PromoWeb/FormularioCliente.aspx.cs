@@ -33,38 +33,37 @@ namespace PromoWeb
 
             ClienteNegocio clienteNegocio = new ClienteNegocio();
             VoucherNegocio voucherNegocio = new VoucherNegocio();
-            
-            Cliente cliente = clienteNegocio.buscarClienteDni(txtDocumento.Text);//se busca el cliente por documento en BD
-            if (cliente != null)
+            Cliente cliente = new Cliente();
+
+            cliente = clienteNegocio.buscarClienteDni(txtDocumento.Text);//se busca el cliente por documento en BD
+            if (cliente == null)
             {
-                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Este cliente ya está registrado.');", true);
-                return;
+                cliente = new Cliente();
+
+                cliente.Documento = txtDocumento.Text;
+                cliente.Nombre = txtNombre.Text;
+                cliente.Apellido = txtApellido.Text;
+                cliente.Email = txtEmail.Text;
+                cliente.Direccion = txtDireccion.Text;
+                cliente.Ciudad = txtCiudad.Text;
+                int cp = 0;                           //cliente.CP = int.Parse(txtCP.Text); lanzaba un error al ejecutarse 
+                int.TryParse(txtCP.Text, out cp);
+                cliente.CP = cp;
+
+                cliente.Id = clienteNegocio.agregarCliente(cliente); //se agrega registro nuevo cliente a la BD y traigo su Id autonunmérico para luego settear al voucher
             }
-        
-           cliente = new Cliente();
-           
-           cliente.Documento = txtDocumento.Text;
-           cliente.Nombre = txtNombre.Text;
-           cliente.Apellido = txtApellido.Text;
-           cliente.Email = txtEmail.Text;
-           cliente.Direccion = txtDireccion.Text;
-           cliente.Ciudad = txtCiudad.Text;
-           int cp = 0;                           //cliente.CP = int.Parse(txtCP.Text); lanzaba un error al ejecutarse 
-           int.TryParse(txtCP.Text, out cp);
-           cliente.CP = cp;
 
-           cliente.Id = clienteNegocio.agregarCliente(cliente); //se agrega registro nuevo cliente a la BD y traigo su Id autonunmérico para luego settear al voucher
-           ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Participación registrada!');", true);
             
+       
                 //string codigoVoucher = Session["codigoVoucher"].ToString(); //Traemos el codigo de voucher cargado en la session
-                //Voucher voucher = new Voucher();
-                //voucher.IdCliente = cliente.Id;
-                //voucher.FechaCanje = DateTime.Now;
-                //voucher.IdArticulo = aca tenemos que hacer viajar el codigo del articulo
-                //voucher.CodigoVoucher = codigoVoucher;
-                //voucherNegocio.modificar(voucher);
+                Voucher voucher = new Voucher();
+                voucher.IdCliente = cliente.Id;
+                voucher.FechaCanje = DateTime.Now;
+                voucher.IdArticulo = 1;
+                voucher.CodigoVoucher = "Codigo02";
+                voucherNegocio.modificar(voucher);
 
-            //chkAceptar = true para dejar participar
+                //chkAceptar = true para dejar participar
 
         }
 
