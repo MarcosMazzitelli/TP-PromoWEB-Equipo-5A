@@ -13,53 +13,30 @@ namespace PromoWeb
     {
         public List<Articulo> ListaArticulos { get; set; }
         public List<Imagen> ListaImagenes { get; set; }
-        //public List<Imagen> imagenesPorArticulo;
+        public List<Imagen> imagenesPorArticulo;
         protected void Page_Load(object sender, EventArgs e)
         {
             ArticuloNegocio articuloNegocio = new ArticuloNegocio();
-            //ImagenNegocio imagenNegocio = new ImagenNegocio();
-            
+            ImagenNegocio imagenNegocio = new ImagenNegocio();
+
             //Se carga en memoria la property publica ListaArticulos e imagenes para poder usarla en el front
             ListaArticulos = articuloNegocio.listar();
-            //ListaImagenes = imagenNegocio.listar();
+            ListaImagenes = imagenNegocio.listar();
 
-            if (!IsPostBack)
+            if (IsPostBack) //El evento del boton genera un postback, por lo que lo manipulamos dentro de este IF.
             {
-                repTarjetas.DataSource = ListaArticulos;
-                repTarjetas.DataBind();
+                /*Documentacion objeto REQUEST (QueryString, Form y Cookies) https://learn.microsoft.com/es-es/aspnet/web-pages/overview/getting-started/introducing-aspnet-web-pages-2/form-basics */
+                string articuloSeleccionado = Request.Form["btnElegirPremio"]; //obtiene una coleccion de variables del formulario, en este caso solo la del btnElegirPremio
+
+                if (!string.IsNullOrEmpty(articuloSeleccionado))
+                {
+                    int idArticulo = int.Parse(articuloSeleccionado);
+                    //Modificar la pagina de redirect DEFAULT por la de carga del formulario
+                    Response.Redirect("Default.aspx?id=" + idArticulo);
+                }
             }
-        }
-
-        //public string ImagenUrl(List<Imagen> imagenesPorArticulo)
-        //{
-        //    if(imagenesPorArticulo != null && imagenesPorArticulo.Count > 0)
-        //    {
-        //        return imagenesPorArticulo[0].ImagenUrl;
-        //    }
-        //    //imagen por defecto (placeholder)
-        //    return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUwCJYSnbBLMEGWKfSnWRGC_34iCCKkxePpg&s";
-        //}
-
-        protected void repTarjetas_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                var repImagenes = (Repeater)e.Item.FindControl("repImagenes");
-                var articulo = (Articulo)e.Item.DataItem;
-
-                ImagenNegocio negocio = new ImagenNegocio();
-                ListaImagenes = negocio.listarPorIdArticulo(articulo.Id);
-
-                repImagenes.DataSource = ListaImagenes;
-                repImagenes.DataBind();
-            }
-        }
-
-        // https://learn.microsoft.com/es-es/dotnet/api/system.web.ui.webcontrols.repeater.itemdatabound?view=netframework-4.8.1#system-web-ui-webcontrols-repeater-itemdatabound
-
-        protected void btnElegirPremio_Click(object sender, EventArgs e)
-        {
 
         }
+
     }
 }
