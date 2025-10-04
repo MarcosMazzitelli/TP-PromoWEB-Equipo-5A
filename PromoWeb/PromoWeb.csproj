@@ -71,6 +71,7 @@
     <Content Include="FormularioCliente.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Premios.aspx" />
+    <Content Include="VentanaFinal.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +107,13 @@
       <DependentUpon>Premios.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VentanaFinal.aspx.cs">
+      <DependentUpon>VentanaFinal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="VentanaFinal.aspx.designer.cs">
+      <DependentUpon>VentanaFinal.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="MasterPage.Master" />

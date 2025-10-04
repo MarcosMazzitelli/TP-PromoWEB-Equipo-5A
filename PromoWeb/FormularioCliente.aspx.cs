@@ -15,7 +15,13 @@ namespace PromoWeb
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+            string idArticulo = Request.QueryString["id"]; //guardo el Id que viaja por URL en una variable
+
+            if (!string.IsNullOrEmpty(idArticulo))
+            {
+                Session["idArticulo"] = idArticulo; // lo guardo en Session para usarla despues
+            }
+            
         }
         protected void cvAceptar_ServerValidate(object source, ServerValidateEventArgs args) 
         {
@@ -36,8 +42,11 @@ namespace PromoWeb
             Cliente cliente = new Cliente();
 
             cliente = clienteNegocio.buscarClienteDni(txtDocumento.Text);//se busca el cliente por documento en BD
-            if (cliente == null)
+            
+            if (cliente == null) //meteodo para registrar cliente
             {
+               
+                Session["registrado"] = true; //guardo en la session si es cliente nuevo o no para el mensaje de exito en la ventana final
                 cliente = new Cliente();
 
                 cliente.Documento = txtDocumento.Text;
@@ -46,25 +55,31 @@ namespace PromoWeb
                 cliente.Email = txtEmail.Text;
                 cliente.Direccion = txtDireccion.Text;
                 cliente.Ciudad = txtCiudad.Text;
-                int cp = 0;                           //cliente.CP = int.Parse(txtCP.Text); lanzaba un error al ejecutarse 
-                int.TryParse(txtCP.Text, out cp);
-                cliente.CP = cp;
+                cliente.CP = int.Parse(txtCP.Text);
 
                 cliente.Id = clienteNegocio.agregarCliente(cliente); //se agrega registro nuevo cliente a la BD y traigo su Id autonunmérico para luego settear al voucher
             }
-
-            
-       
-                //string codigoVoucher = Session["codigoVoucher"].ToString(); //Traemos el codigo de voucher cargado en la session
+            else
+            {
+                Session["registrado"] = false; //si no es nuevo cliente queda en false
+            }
                 Voucher voucher = new Voucher();
+                string codigoVoucher = Session["codigoVoucher"].ToString(); //Traemos el codigo de voucher cargado en la session
+              
+                int idArticulo = 0;
+                 if (Session["idArticulo"] != null)
+                 {
+                     idArticulo = int.Parse(Session["idArticulo"].ToString()); //traemos el id viajaba desde Premio por URL, que luego guardamos en session en el Load. 
+            }
+
                 voucher.IdCliente = cliente.Id;
-                voucher.FechaCanje = DateTime.Now;
-                voucher.IdArticulo = 1;
-                voucher.CodigoVoucher = "Codigo02";
+                voucher.FechaCanje = DateTime.Now; //toma el valor del momento del dia en el que se ejecuta el ingreso del voucher
+                voucher.IdArticulo = idArticulo; 
+                voucher.CodigoVoucher = codigoVoucher;
                 voucherNegocio.modificar(voucher);
-
-                //chkAceptar = true para dejar participar
-
+                
+                Session["cliente"] = cliente; // Gurdamos en session los datos que necesitamos para la ventana final
+                Response.Redirect("VentanaFinal.aspx", false);
         }
 
         protected void txtDocumento_TextChanged(object sender, EventArgs e) //funcion con AutoPostBack para poder capturar el evento del cambio de contenido en el textbox

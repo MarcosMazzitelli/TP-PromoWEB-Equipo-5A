@@ -32,7 +32,7 @@ namespace PromoWeb
                 {
                     int idArticulo = int.Parse(articuloSeleccionado);
                     //Modificar la pagina de redirect DEFAULT por la de carga del formulario
-                    Response.Redirect("Default.aspx?id=" + idArticulo);
+                    Response.Redirect("FormularioCliente.aspx?id=" + idArticulo);
                 }
             }
 
