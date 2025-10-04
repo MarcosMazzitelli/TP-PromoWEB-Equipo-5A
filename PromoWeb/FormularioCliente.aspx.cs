@@ -15,34 +15,47 @@ namespace PromoWeb
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-         
+           
+        }
+        protected void cvAceptar_ServerValidate(object source, ServerValidateEventArgs args) 
+        {
+            args.IsValid = chkAceptar.Checked; //si el usuario apreto o no devuelve true o false para validar
         }
 
+
         protected void BtnParticipar_Click(object sender, EventArgs e)
-        {
-       
+       {
+         
+            if (!Page.IsValid) //no ejecuta el siguiente codigo salvo que la pagina si sea valida (validadores)
+            {
+                return;
+            }
 
             ClienteNegocio clienteNegocio = new ClienteNegocio();
             VoucherNegocio voucherNegocio = new VoucherNegocio();
             
             Cliente cliente = clienteNegocio.buscarClienteDni(txtDocumento.Text);//se busca el cliente por documento en BD
-
-            if(cliente == null)//si no se encontro procedo a setear los valores ingresados en el textBox para luego impactar el registro en la BD
+            if (cliente != null)
             {
-                cliente = new Cliente();
-           
-                cliente.Documento = txtDocumento.Text;
-                cliente.Nombre = txtNombre.Text;
-                cliente.Apellido = txtApellido.Text;
-                cliente.Email = txtEmail.Text;
-                cliente.Direccion = txtDireccion.Text;
-                cliente.Ciudad = txtCiudad.Text;
-                int cp = 0;                           //cliente.CP = int.Parse(txtCP.Text); lanzaba un error al ejecutarse 
-                int.TryParse(txtCP.Text, out cp);
-                cliente.CP = cp;
-
-                cliente.Id = clienteNegocio.agregarCliente(cliente); //se agrega registro nuevo cliente a la BD y traigo su Id autonunmérico para luego settear al voucher
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Este cliente ya está registrado.');", true);
+                return;
             }
+        
+           cliente = new Cliente();
+           
+           cliente.Documento = txtDocumento.Text;
+           cliente.Nombre = txtNombre.Text;
+           cliente.Apellido = txtApellido.Text;
+           cliente.Email = txtEmail.Text;
+           cliente.Direccion = txtDireccion.Text;
+           cliente.Ciudad = txtCiudad.Text;
+           int cp = 0;                           //cliente.CP = int.Parse(txtCP.Text); lanzaba un error al ejecutarse 
+           int.TryParse(txtCP.Text, out cp);
+           cliente.CP = cp;
+
+           cliente.Id = clienteNegocio.agregarCliente(cliente); //se agrega registro nuevo cliente a la BD y traigo su Id autonunmérico para luego settear al voucher
+           ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('Participación registrada!');", true);
+            
                 //string codigoVoucher = Session["codigoVoucher"].ToString(); //Traemos el codigo de voucher cargado en la session
                 //Voucher voucher = new Voucher();
                 //voucher.IdCliente = cliente.Id;
@@ -57,7 +70,7 @@ namespace PromoWeb
 
         protected void txtDocumento_TextChanged(object sender, EventArgs e) //funcion con AutoPostBack para poder capturar el evento del cambio de contenido en el textbox
         {
-
+           
             ClienteNegocio clienteNegocio = new ClienteNegocio();
             Cliente cliente = new Cliente();
           

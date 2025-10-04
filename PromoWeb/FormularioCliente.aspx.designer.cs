@@ -15,6 +15,24 @@ namespace PromoWeb
     {
 
         /// <summary>
+        /// Control ScriptManager1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.ScriptManager ScriptManager1;
+
+        /// <summary>
+        /// Control upCliente.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upCliente;
+
+        /// <summary>
         /// Control txtDocumento.
         /// </summary>
         /// <remarks>
@@ -96,13 +114,13 @@ namespace PromoWeb
         protected global::System.Web.UI.WebControls.Label lblAceptar;
 
         /// <summary>
-        /// Control lblError.
+        /// Control cvAceptar.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblError;
+        protected global::System.Web.UI.WebControls.CustomValidator cvAceptar;
 
         /// <summary>
         /// Control BtnParticipar.
