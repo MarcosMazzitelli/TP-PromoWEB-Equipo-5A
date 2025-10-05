@@ -16,7 +16,6 @@ namespace PromoWeb
         protected void Page_Load(object sender, EventArgs e)
         {
             string idArticulo = Request.QueryString["id"]; //guardo el Id que viaja por URL en una variable
-
             if (!string.IsNullOrEmpty(idArticulo))
             {
                 Session["idArticulo"] = idArticulo; // lo guardo en Session para usarla despues

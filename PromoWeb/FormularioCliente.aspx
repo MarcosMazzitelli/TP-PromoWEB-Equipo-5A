@@ -13,7 +13,7 @@
             <label for="txtDocumento" class="form-label">Documento</label>
             <asp:TextBox runat="server" AutoPostBack="true" OnTextChanged="txtDocumento_TextChanged" ID="txtDocumento" CssClass="form-control"/>
             <asp:RequiredFieldValidator  runat="server" ControlToValidate="txtDocumento" ErrorMessage="El documento es obligatorio."  ForeColor="Red" />
-            <asp:RegularExpressionValidator  runat="server" ControlToValidate="txtDocumento" ErrorMessage="Sólo números."  ValidationExpression="^\d+$" ForeColor="Red" />
+            <asp:RegularExpressionValidator  runat="server" ControlToValidate="txtDocumento" ErrorMessage="Sólo números (entre 7 y 8 digitos)"  ValidationExpression="^\d{7,8}$" ForeColor="Red" />
         </div>
         <div class="col-md-4">
             <label for="txtNombre" class="form-label">Nombre</label>
