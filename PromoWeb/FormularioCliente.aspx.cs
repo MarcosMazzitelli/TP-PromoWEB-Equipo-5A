@@ -33,9 +33,18 @@ namespace PromoWeb
             args.IsValid = chkAceptar.Checked; //si el usuario apreto o no devuelve true o false para validar
         }
 
+        protected void cvEmail_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            ClienteNegocio clienteNegocio = new ClienteNegocio();
+
+            bool emailValido = clienteNegocio.validarEmail(txtEmail.Text); // Validar el email con el metodo agregado en ClienteNegocio
+
+            args.IsValid = emailValido; // True = Válido, False = No válido
+        }
+
 
         protected void BtnParticipar_Click(object sender, EventArgs e)
-       {
+        {
          
             if (!Page.IsValid) //no ejecuta el siguiente codigo salvo que la pagina si sea valida (validadores)
             {
@@ -101,7 +110,31 @@ namespace PromoWeb
                 try
                 {
                     EmailService email = new EmailService();
-                    email.armarCorreo(txtEmail.Text, "Promoción", "Cupon reclamado"); // Se arma al estructura del correo
+
+                    // Guardo los campos necesarios para el mail personalizado
+                    string nombreArticulo = Session["nombreArticulo"].ToString();
+                    string nombreCliente = cliente.Nombre;
+                    string apellidoCliente = cliente.Apellido;
+                    string emailCliente = cliente.Email;
+
+                    string cuerpo = $@"
+                    <html>
+                      <body style='font-family: Arial, sans-serif; background-color:#f5f5f5; padding:20px; color:#000 !important;'>
+                        <div style='max-width:600px; margin:auto; background:#fff; border:1px solid #ddd; border-radius:8px; padding:20px; color:#000 !important;'>
+                          <h2 style='text-align:center; color:#000 !important;'>Gracias por participar, {nombreCliente} {apellidoCliente}</h2>
+                          <p style='color:#000 !important;'>Tu canje del artículo <b style=""color:#000 !important;"">{nombreArticulo}</b> se registró correctamente.</p>
+                          <p style='color:#000 !important;'>Tu código de voucher es:</p>
+                          <p style='font-size:20px; font-weight:bold; text-align:center; margin:15px 0; color:#000 !important;'>{codigoVoucher}</p>
+                          <hr style='border:none; border-top:1px solid #eee; margin:20px 0;'/>
+                          <p style='font-size:12px; color:#000 !important; text-align:center;'>
+                            Este mensaje fue generado automáticamente por <b style=""color:#000 !important;"">PromoWeb</b>.<br/>
+                            Por favor, no respondas a este correo.
+                          </p>
+                        </div>
+                      </body>
+                    </html>";
+
+                    email.armarCorreo(emailCliente, "Cupon reclamado - PromoWebApp", cuerpo); // Se arma al estructura del correo
                     email.enviarEmail(); // Se envia el correo al email del cliente agregado o modificado
                 }
                 catch (Exception ex)
