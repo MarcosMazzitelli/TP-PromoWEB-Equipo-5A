@@ -154,7 +154,7 @@ namespace negocio
             }
         }
 
-        public bool validarEmail(string email)
+        public bool validarEmail(string email, string documento)
         {
             List<Cliente> listaCliente = new List<Cliente>();
 
@@ -162,7 +162,7 @@ namespace negocio
 
             foreach(Cliente cliente in listaCliente)
             {
-                if(cliente.Email == email)
+                if(cliente.Email == email && cliente.Documento != documento)
                 {
                     return false;
                 }
