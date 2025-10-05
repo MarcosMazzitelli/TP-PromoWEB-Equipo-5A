@@ -46,7 +46,7 @@ namespace negocio
             }
         }
 
-        public Cliente buscarClientePorDni(string dni) // Estimo que los dni no se repiten pero PREGUNTAR ESO A COMPAÑEROS
+        public Cliente buscarClientePorDni(string dni) 
         {
             List<Cliente> listaClientes = new List<Cliente>();
             listaClientes = listar();

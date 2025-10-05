@@ -18,7 +18,11 @@
                     <label class="form-label fw-bold">Código del Voucher:</label>
                     <asp:Label ID="lblCodigoVoucher" runat="server" CssClass="form-control-plaintext"></asp:Label>
                 </div>
-                   
+                <div class="mb-2">
+                    <label class="form-label fw-bold">Nombre del Artículo:</label>
+                     <asp:Label ID="lblNombreArticulo" runat="server" CssClass="form-control-plaintext"></asp:Label>
+               </div>
+
                 <div class="mb-3">
                      <asp:Label ID="lblMensajeExito" runat="server" CssClass="alert alert-light d-inline-block fs-8" Visible="false"></asp:Label>
                 </div>

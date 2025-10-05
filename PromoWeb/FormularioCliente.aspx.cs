@@ -15,10 +15,16 @@ namespace PromoWeb
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            ArticuloNegocio articuloNegocio = new ArticuloNegocio();
+            string nombreArticulo;
+
             string idArticulo = Request.QueryString["id"]; //guardo el Id que viaja por URL en una variable
             if (!string.IsNullOrEmpty(idArticulo))
             {
+                int idArt = int.Parse(idArticulo);
                 Session["idArticulo"] = idArticulo; // lo guardo en Session para usarla despues
+                nombreArticulo = articuloNegocio.buscarNombreArticulo(idArt);
+                Session["nombreArticulo"] = nombreArticulo;
             }
             
         }
@@ -62,23 +68,23 @@ namespace PromoWeb
             {
                 Session["registrado"] = false; //si no es nuevo cliente queda en false
             }
-                Voucher voucher = new Voucher();
-                string codigoVoucher = Session["codigoVoucher"].ToString(); //Traemos el codigo de voucher cargado en la session
+            Voucher voucher = new Voucher();
+            string codigoVoucher = Session["codigoVoucher"].ToString(); //Traemos el codigo de voucher cargado en la session
               
-                int idArticulo = 0;
-                 if (Session["idArticulo"] != null)
-                 {
-                     idArticulo = int.Parse(Session["idArticulo"].ToString()); //traemos el id viajaba desde Premio por URL, que luego guardamos en session en el Load. 
+            int idArticulo = 0;
+            if (Session["idArticulo"] != null)
+            {
+                idArticulo = int.Parse(Session["idArticulo"].ToString()); //traemos el id viajaba desde Premio por URL, que luego guardamos en session en el Load. 
             }
 
-                voucher.IdCliente = cliente.Id;
-                voucher.FechaCanje = DateTime.Now; //toma el valor del momento del dia en el que se ejecuta el ingreso del voucher
-                voucher.IdArticulo = idArticulo; 
-                voucher.CodigoVoucher = codigoVoucher;
-                voucherNegocio.modificar(voucher);
+            voucher.IdCliente = cliente.Id;
+            voucher.FechaCanje = DateTime.Now; //toma el valor del momento del dia en el que se ejecuta el ingreso del voucher
+            voucher.IdArticulo = idArticulo; 
+            voucher.CodigoVoucher = codigoVoucher;
+            voucherNegocio.modificar(voucher);
                 
-                Session["cliente"] = cliente; // Gurdamos en session los datos que necesitamos para la ventana final
-                Response.Redirect("VentanaFinal.aspx", false);
+            Session["cliente"] = cliente; // Gurdamos en session los datos que necesitamos para la ventana final
+            Response.Redirect("VentanaFinal.aspx", false);
         }
 
         protected void txtDocumento_TextChanged(object sender, EventArgs e) //funcion con AutoPostBack para poder capturar el evento del cambio de contenido en el textbox

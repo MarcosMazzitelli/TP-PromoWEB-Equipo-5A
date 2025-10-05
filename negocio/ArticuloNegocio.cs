@@ -47,6 +47,33 @@ namespace negocio
                 throw ex;
             }
         }
-    
+        public string buscarNombreArticulo(int id)
+        {
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                datos.setearConsulta("SELECT Nombre FROM Articulos WHERE Id = @id");
+                datos.setearParametro("@id", id);
+                datos.ejecutarLectura();
+
+                if (datos.Lector.Read())
+                {
+                    Articulo articulo = new Articulo();
+                   articulo.Nombre = (string)datos.Lector["Nombre"];
+                  
+                    return articulo.Nombre;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                datos.cerrarConexion();
+            }
+        }
+
     }
 }

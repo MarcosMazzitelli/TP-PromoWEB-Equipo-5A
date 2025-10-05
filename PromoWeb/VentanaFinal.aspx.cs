@@ -39,8 +39,16 @@ namespace PromoWeb
                         lblMensajeExito.Visible = true;
                     }
                 }
-
-                Cliente cliente = (Cliente)Session["cliente"];
+                if (Session["nombreArticulo"] != null)
+                {
+                    string nombreArticulo = Session["nombreArticulo"].ToString();
+                    lblNombreArticulo.Text = nombreArticulo;
+                }
+                else
+                {
+                    lblNombreArticulo.Text = "No disponible";
+                }
+                    Cliente cliente = (Cliente)Session["cliente"];
 
                 if (cliente != null && !string.IsNullOrEmpty(cliente.Nombre))
                 {
