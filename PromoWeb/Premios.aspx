@@ -1,14 +1,13 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.Master" AutoEventWireup="true" CodeBehind="Premios.aspx.cs" Inherits="PromoWeb.Premios" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-<style>
-    .card-img {
-        max-height: 250px;   /* Ajustá según lo que quieras */
-        min-height: 250px;
-        object-fit: contain; /* Ajusta dentro del recuadro sin deformar */
-    }
-
-</style>
+    <style>
+        .card-img {
+            max-height: 250px; /* Ajustá según lo que quieras */
+            min-height: 250px;
+            object-fit: contain; /* Ajusta dentro del recuadro sin deformar */
+        }
+    </style>
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -54,6 +53,9 @@
                             }
                         %>
                     </div>
+                    <% if (imagenesPorArticulo.Count > 0)
+                        {
+                    %>
                     <button class="carousel-control-prev" type="button" data-bs-target="#<%:idCarousel %>" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Anterior</span>
@@ -62,6 +64,9 @@
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Siguiente</span>
                     </button>
+                    <%
+                        }
+                    %>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title"><%: articulo.Nombre %></h5>
