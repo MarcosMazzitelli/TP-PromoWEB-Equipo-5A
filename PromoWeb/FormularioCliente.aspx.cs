@@ -82,7 +82,11 @@ namespace PromoWeb
             voucher.IdArticulo = idArticulo; 
             voucher.CodigoVoucher = codigoVoucher;
             voucherNegocio.modificar(voucher);
-                
+
+            EmailService email = new EmailService();
+            email.armarCorreo(txtEmail.Text, "Promoción", "Cupon reclamado"); // Se arma al estructura del correo
+            email.enviarEmail(); // Se envia el correo al email del cliente agregado o modificado
+
             Session["cliente"] = cliente; // Gurdamos en session los datos que necesitamos para la ventana final
             Response.Redirect("VentanaFinal.aspx", false);
         }
