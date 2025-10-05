@@ -32,8 +32,8 @@ namespace PromoWeb
                     if (!string.IsNullOrEmpty(articuloSeleccionado))
                     {
                         int idArticulo = int.Parse(articuloSeleccionado);
-                        //Modificar la pagina de redirect DEFAULT por la de carga del formulario
                         Response.Redirect("FormularioCliente.aspx?id=" + idArticulo, false);
+                        return;
                     }
                 }
             }

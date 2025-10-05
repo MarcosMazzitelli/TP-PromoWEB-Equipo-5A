@@ -29,17 +29,20 @@ namespace PromoWeb
                 if (voucher == null)
                 {
                     Session.Add("error", "El código del voucher ingresado no es válido.");
-                    Response.Redirect("Error.aspx");
+                    Response.Redirect("Error.aspx", false);
+                    return;
                 }
 
                 if (voucher.IdCliente != 0)
                 {
                     Session.Add("error", "Este voucher ya fue utilizado.");
-                    Response.Redirect("Error.aspx");
+                    Response.Redirect("Error.aspx", false);
+                    return;
                 }
 
                 Session.Add("codigoVoucher", voucher.CodigoVoucher);
                 Response.Redirect("Premios.aspx", false);
+                return;
             }
             catch (System.Threading.ThreadAbortException ex) { }
             catch (Exception ex)

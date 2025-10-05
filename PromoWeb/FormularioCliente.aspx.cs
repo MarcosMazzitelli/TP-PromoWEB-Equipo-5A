@@ -47,8 +47,24 @@ namespace PromoWeb
                 ClienteNegocio clienteNegocio = new ClienteNegocio();
                 VoucherNegocio voucherNegocio = new VoucherNegocio();
                 Cliente cliente = new Cliente();
+                Voucher voucher = new Voucher();
+                string codigoVoucher;
+
 
                 cliente = clienteNegocio.buscarClienteDni(txtDocumento.Text);//se busca el cliente por documento en BD
+
+
+                if (Session["codigoVoucher"] != null)
+                {
+                    codigoVoucher = Session["codigoVoucher"].ToString(); //Traemos el codigo de voucher cargado en la session
+                }
+                else
+                {
+                    Session.Add("error", "No se encontró el código de voucher");
+                    Response.Redirect("Error.aspx", false);
+                    return;
+
+                }
 
                 if (cliente == null) //meteodo para registrar cliente
                 {
@@ -69,20 +85,6 @@ namespace PromoWeb
                 else
                 {
                     Session["registrado"] = false; //si no es nuevo cliente queda en false
-                }
-                Voucher voucher = new Voucher();
-                string codigoVoucher;
-
-                if (Session["codigoVoucher"] != null)
-                {
-                    codigoVoucher = Session["codigoVoucher"].ToString(); //Traemos el codigo de voucher cargado en la session
-                }
-                else
-                {
-                    Session.Add("error", "No se encontró el código de voucher");
-                    Response.Redirect("Error.aspx", false);
-                    return;
-
                 }
 
                 int idArticulo = 0;
@@ -107,10 +109,12 @@ namespace PromoWeb
 
                     Session.Add("error", "Error al enviar el email" + ex.ToString());
                     Response.Redirect("Error.aspx", false);
+                    return;
                 }
 
                 Session["cliente"] = cliente; // Gurdamos en session los datos que necesitamos para la ventana final
                 Response.Redirect("VentanaFinal.aspx", false);
+                return;
 
             }
             catch (Exception ex)
