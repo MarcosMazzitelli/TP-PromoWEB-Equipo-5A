@@ -153,5 +153,22 @@ namespace negocio
                 datos.cerrarConexion();
             }
         }
+
+        public bool validarEmail(string email)
+        {
+            List<Cliente> listaCliente = new List<Cliente>();
+
+            listaCliente = listar();
+
+            foreach(Cliente cliente in listaCliente)
+            {
+                if(cliente.Email == email)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

@@ -35,6 +35,7 @@
             </div>
             <asp:RequiredFieldValidator runat="server"  ControlToValidate="txtEmail" ErrorMessage="El email es obligatorio."  ForeColor="Red"/>
             <asp:RegularExpressionValidator runat="server"  ControlToValidate="txtEmail" ErrorMessage="Email inválido."  ValidationExpression="^[^@\s]+@[^@\s]+\.[^@\s]+$"  ForeColor="Red"  />
+            <asp:CustomValidator ID="cvEmail" runat="server" ErrorMessage="El email ingresado ya esta en uso." ForeColor="Red" OnServerValidate="cvEmail_ServerValidate" />
         </div>
         <div class="col-md-6">
             <label for="txtDireccion" class="form-label">Dirección</label>

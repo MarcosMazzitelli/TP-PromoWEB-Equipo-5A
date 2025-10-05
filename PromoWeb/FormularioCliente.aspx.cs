@@ -33,9 +33,18 @@ namespace PromoWeb
             args.IsValid = chkAceptar.Checked; //si el usuario apreto o no devuelve true o false para validar
         }
 
+        protected void cvEmail_ServerValidate(object source, ServerValidateEventArgs args)
+        {
+            ClienteNegocio clienteNegocio = new ClienteNegocio();
+
+            bool emailValido = clienteNegocio.validarEmail(txtEmail.Text); // Validar el email con el metodo agregado en ClienteNegocio
+
+            args.IsValid = emailValido; // True = Válido, False = No válido
+        }
+
 
         protected void BtnParticipar_Click(object sender, EventArgs e)
-       {
+        {
          
             if (!Page.IsValid) //no ejecuta el siguiente codigo salvo que la pagina si sea valida (validadores)
             {
