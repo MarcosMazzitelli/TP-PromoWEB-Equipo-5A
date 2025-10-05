@@ -16,27 +16,32 @@ namespace PromoWeb
         public List<Imagen> imagenesPorArticulo;
         protected void Page_Load(object sender, EventArgs e)
         {
-            ArticuloNegocio articuloNegocio = new ArticuloNegocio();
-            ImagenNegocio imagenNegocio = new ImagenNegocio();
-
-            //Se carga en memoria la property publica ListaArticulos e imagenes para poder usarla en el front
-            ListaArticulos = articuloNegocio.listar();
-            ListaImagenes = imagenNegocio.listar();
-
-            if (IsPostBack) //El evento del boton genera un postback, por lo que lo manipulamos dentro de este IF.
+            try
             {
-                /*Documentacion objeto REQUEST (QueryString, Form y Cookies) https://learn.microsoft.com/es-es/aspnet/web-pages/overview/getting-started/introducing-aspnet-web-pages-2/form-basics */
-                string articuloSeleccionado = Request.Form["btnElegirPremio"]; //obtiene una coleccion de variables del formulario, en este caso solo la del btnElegirPremio
+                ArticuloNegocio articuloNegocio = new ArticuloNegocio();
+                ImagenNegocio imagenNegocio = new ImagenNegocio();
+                //Se carga en memoria la property publica ListaArticulos e imagenes para poder usarla en el front
+                ListaArticulos = articuloNegocio.listar();
+                ListaImagenes = imagenNegocio.listar();
 
-                if (!string.IsNullOrEmpty(articuloSeleccionado))
+                if (IsPostBack) //El evento del boton genera un postback, por lo que lo manipulamos dentro de este IF.
                 {
-                    int idArticulo = int.Parse(articuloSeleccionado);
-                    //Modificar la pagina de redirect DEFAULT por la de carga del formulario
-                    Response.Redirect("FormularioCliente.aspx?id=" + idArticulo);
+                    /*Documentacion objeto REQUEST (QueryString, Form y Cookies) https://learn.microsoft.com/es-es/aspnet/web-pages/overview/getting-started/introducing-aspnet-web-pages-2/form-basics */
+                    string articuloSeleccionado = Request.Form["btnElegirPremio"]; //obtiene una coleccion de variables del formulario, en este caso solo la del btnElegirPremio
+
+                    if (!string.IsNullOrEmpty(articuloSeleccionado))
+                    {
+                        int idArticulo = int.Parse(articuloSeleccionado);
+                        //Modificar la pagina de redirect DEFAULT por la de carga del formulario
+                        Response.Redirect("FormularioCliente.aspx?id=" + idArticulo, false);
+                    }
                 }
             }
-
+            catch (Exception ex)
+            {
+                Session.Add("error", "Error al cargar la página de premios" + ex.ToString());
+                Response.Redirect("Error.aspx", false);
+            }
         }
-
     }
 }

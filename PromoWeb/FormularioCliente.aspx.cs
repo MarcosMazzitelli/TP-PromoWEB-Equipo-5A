@@ -42,53 +42,83 @@ namespace PromoWeb
                 return;
             }
 
-            ClienteNegocio clienteNegocio = new ClienteNegocio();
-            VoucherNegocio voucherNegocio = new VoucherNegocio();
-            Cliente cliente = new Cliente();
-
-            cliente = clienteNegocio.buscarClienteDni(txtDocumento.Text);//se busca el cliente por documento en BD
-            
-            if (cliente == null) //meteodo para registrar cliente
+            try
             {
-               
-                Session["registrado"] = true; //guardo en la session si es cliente nuevo o no para el mensaje de exito en la ventana final
-                cliente = new Cliente();
+                ClienteNegocio clienteNegocio = new ClienteNegocio();
+                VoucherNegocio voucherNegocio = new VoucherNegocio();
+                Cliente cliente = new Cliente();
 
-                cliente.Documento = txtDocumento.Text;
-                cliente.Nombre = txtNombre.Text;
-                cliente.Apellido = txtApellido.Text;
-                cliente.Email = txtEmail.Text;
-                cliente.Direccion = txtDireccion.Text;
-                cliente.Ciudad = txtCiudad.Text;
-                cliente.CP = int.Parse(txtCP.Text);
+                cliente = clienteNegocio.buscarClienteDni(txtDocumento.Text);//se busca el cliente por documento en BD
 
-                cliente.Id = clienteNegocio.agregarCliente(cliente); //se agrega registro nuevo cliente a la BD y traigo su Id autonunmérico para luego settear al voucher
+                if (cliente == null) //meteodo para registrar cliente
+                {
+
+                    Session["registrado"] = true; //guardo en la session si es cliente nuevo o no para el mensaje de exito en la ventana final
+                    cliente = new Cliente();
+
+                    cliente.Documento = txtDocumento.Text;
+                    cliente.Nombre = txtNombre.Text;
+                    cliente.Apellido = txtApellido.Text;
+                    cliente.Email = txtEmail.Text;
+                    cliente.Direccion = txtDireccion.Text;
+                    cliente.Ciudad = txtCiudad.Text;
+                    cliente.CP = int.Parse(txtCP.Text);
+
+                    cliente.Id = clienteNegocio.agregarCliente(cliente); //se agrega registro nuevo cliente a la BD y traigo su Id autonunmérico para luego settear al voucher
+                }
+                else
+                {
+                    Session["registrado"] = false; //si no es nuevo cliente queda en false
+                }
+                Voucher voucher = new Voucher();
+                string codigoVoucher;
+
+                if (Session["codigoVoucher"] != null)
+                {
+                    codigoVoucher = Session["codigoVoucher"].ToString(); //Traemos el codigo de voucher cargado en la session
+                }
+                else
+                {
+                    Session.Add("error", "No se encontró el código de voucher");
+                    Response.Redirect("Error.aspx", false);
+                    return;
+
+                }
+
+                int idArticulo = 0;
+                if (Session["idArticulo"] != null)
+                {
+                    idArticulo = int.Parse(Session["idArticulo"].ToString()); //traemos el id viajaba desde Premio por URL, que luego guardamos en session en el Load. 
+                }
+
+                voucher.IdCliente = cliente.Id;
+                voucher.FechaCanje = DateTime.Now; //toma el valor del momento del dia en el que se ejecuta el ingreso del voucher
+                voucher.IdArticulo = idArticulo;
+                voucher.CodigoVoucher = codigoVoucher;
+                voucherNegocio.modificar(voucher);
+                try
+                {
+                    EmailService email = new EmailService();
+                    email.armarCorreo(txtEmail.Text, "Promoción", "Cupon reclamado"); // Se arma al estructura del correo
+                    email.enviarEmail(); // Se envia el correo al email del cliente agregado o modificado
+                }
+                catch (Exception ex)
+                {
+
+                    Session.Add("error", "Error al enviar el email" + ex.ToString());
+                    Response.Redirect("Error.aspx", false);
+                }
+
+                Session["cliente"] = cliente; // Gurdamos en session los datos que necesitamos para la ventana final
+                Response.Redirect("VentanaFinal.aspx", false);
+
             }
-            else
+            catch (Exception ex)
             {
-                Session["registrado"] = false; //si no es nuevo cliente queda en false
+
+                Session.Add("error", "Error al participar " + ex.ToString());
+                Response.Redirect("Error.aspx", false);
             }
-            Voucher voucher = new Voucher();
-            string codigoVoucher = Session["codigoVoucher"].ToString(); //Traemos el codigo de voucher cargado en la session
-              
-            int idArticulo = 0;
-            if (Session["idArticulo"] != null)
-            {
-                idArticulo = int.Parse(Session["idArticulo"].ToString()); //traemos el id viajaba desde Premio por URL, que luego guardamos en session en el Load. 
-            }
-
-            voucher.IdCliente = cliente.Id;
-            voucher.FechaCanje = DateTime.Now; //toma el valor del momento del dia en el que se ejecuta el ingreso del voucher
-            voucher.IdArticulo = idArticulo; 
-            voucher.CodigoVoucher = codigoVoucher;
-            voucherNegocio.modificar(voucher);
-
-            EmailService email = new EmailService();
-            email.armarCorreo(txtEmail.Text, "Promoción", "Cupon reclamado"); // Se arma al estructura del correo
-            email.enviarEmail(); // Se envia el correo al email del cliente agregado o modificado
-
-            Session["cliente"] = cliente; // Gurdamos en session los datos que necesitamos para la ventana final
-            Response.Redirect("VentanaFinal.aspx", false);
         }
 
         protected void txtDocumento_TextChanged(object sender, EventArgs e) //funcion con AutoPostBack para poder capturar el evento del cambio de contenido en el textbox

@@ -12,59 +12,67 @@ namespace PromoWeb
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            try
             {
-                string codigoVoucher;
-                bool registrado;
+                if (!IsPostBack)
+                {
+                    string codigoVoucher;
+                    bool registrado;
 
 
-                if (Session["codigoVoucher"] != null)
-                {
-                    codigoVoucher = Session["codigoVoucher"].ToString();
-                    lblCodigoVoucher.Text = codigoVoucher;
-                }
-                else
-                {
-                    lblCodigoVoucher.Text = "No disponible";
-                }
+                    if (Session["codigoVoucher"] != null)
+                    {
+                        codigoVoucher = Session["codigoVoucher"].ToString();
+                        lblCodigoVoucher.Text = codigoVoucher;
+                    }
+                    else
+                    {
+                        lblCodigoVoucher.Text = "No disponible";
+                    }
                     
            
-                if (Session["registrado"] != null)
-                {
-                    registrado = (bool)Session["registrado"];
-
-                    if(registrado)
+                    if (Session["registrado"] != null)
                     {
-                        lblMensajeExito.Text = "Cliente registardo correctamente";
-                        lblMensajeExito.Visible = true;
+                        registrado = (bool)Session["registrado"];
+
+                        if(registrado)
+                        {
+                            lblMensajeExito.Text = "Cliente registardo correctamente";
+                            lblMensajeExito.Visible = true;
+                        }
+                    }
+                    if (Session["nombreArticulo"] != null)
+                    {
+                        string nombreArticulo = Session["nombreArticulo"].ToString();
+                        lblNombreArticulo.Text = nombreArticulo;
+                    }
+                    else
+                    {
+                        lblNombreArticulo.Text = "No disponible";
+                    }
+                        Cliente cliente = (Cliente)Session["cliente"];
+
+                    if (cliente != null && !string.IsNullOrEmpty(cliente.Nombre))
+                    {
+                        lblNombreUsuario.Text = cliente.Nombre;
+                    }
+                    else
+                    {
+                        lblNombreUsuario.Text = "No disponible";
                     }
                 }
-                if (Session["nombreArticulo"] != null)
-                {
-                    string nombreArticulo = Session["nombreArticulo"].ToString();
-                    lblNombreArticulo.Text = nombreArticulo;
-                }
-                else
-                {
-                    lblNombreArticulo.Text = "No disponible";
-                }
-                    Cliente cliente = (Cliente)Session["cliente"];
+            }
+            catch (Exception ex)
+            {
 
-                if (cliente != null && !string.IsNullOrEmpty(cliente.Nombre))
-                {
-                    lblNombreUsuario.Text = cliente.Nombre;
-                }
-                else
-                {
-                    lblNombreUsuario.Text = "No disponible";
-                }
-                
+                Session.Add("error", "Error al cargar la ventana final" + ex.ToString());
+                Response.Redirect("Error.aspx", false);
             }
         }
 
         protected void BtnVolver_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Default.aspx");
+            Response.Redirect("Default.aspx", false);
         }
     }
 }

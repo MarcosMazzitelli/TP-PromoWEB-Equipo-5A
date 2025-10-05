@@ -117,6 +117,10 @@ namespace negocio
                 int idCliente = datos.ejecutarEscalar(); 
                 return idCliente;
             }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
             finally
             {
                 datos.cerrarConexion();

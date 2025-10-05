@@ -39,13 +39,13 @@ namespace PromoWeb
                 }
 
                 Session.Add("codigoVoucher", voucher.CodigoVoucher);
-                Response.Redirect("Premios.aspx");
+                Response.Redirect("Premios.aspx", false);
             }
             catch (System.Threading.ThreadAbortException ex) { }
             catch (Exception ex)
             {
                 Session.Add("error", ex.ToString());
-                Response.Redirect("Error.aspx");
+                Response.Redirect("Error.aspx", false);
             }
         }
     }
